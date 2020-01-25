@@ -1,0 +1,10 @@
+.env
+.idea
+node_modules
+build
+*.log
+*.DS_Store
+*.rdb
+dist
+.next
+*.code-workspace
