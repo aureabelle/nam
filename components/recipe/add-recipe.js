@@ -1,13 +1,19 @@
 import { Fragment, useContext, useState } from "react";
+import fetch from "isomorphic-unfetch";
 
 import { RecipeContext } from "../../context/recipe-context";
 
-const AddRecipe = () => {
+const AddRecipe = ({ apiUrl }) => {
   const recipeContext = useContext(RecipeContext);
   const { cuisine } = recipeContext;
 
   const [coverPhoto, setCoverPhoto] = useState("");
+
+  const [photos, setPhotos] = useState([]);
+  const [photo, setPhoto] = useState("");
+
   const [videoUrl, setVideoUrl] = useState("");
+
   const [recipeName, setRecipeName] = useState("");
   const [description, setDescription] = useState("");
   const [inspiration, setInspiration] = useState("");
@@ -19,8 +25,27 @@ const AddRecipe = () => {
   const [instructions, setInstructions] = useState([]);
   const [instruction, setInstruction] = useState("");
 
+  const [isSuccess, setIsSuccess] = useState(false);
+
   const handleCoverPhotoChange = event => {
     setCoverPhoto(event.target.value);
+  };
+
+  const handlePhotoChange = event => {
+    setPhoto(event.target.value);
+  };
+
+  const handleAddPhoto = event => {
+    event.preventDefault();
+
+    if (photo !== "") {
+      const photoObj = {
+        url: photo
+      };
+
+      setPhotos([...photos, photoObj]);
+      setPhoto("");
+    }
   };
 
   const handleVideoUrl = event => {
@@ -50,14 +75,16 @@ const AddRecipe = () => {
   const handleAddIngredient = event => {
     event.preventDefault();
 
-    const ingObj = {
-      name: ingredient,
-      quantity
-    };
+    if (ingredient !== "" && quantity !== "") {
+      const ingObj = {
+        name: ingredient,
+        quantity
+      };
 
-    setIngredients([...ingredients, ingObj]);
-    setQuantity("");
-    setIngredient("");
+      setIngredients([...ingredients, ingObj]);
+      setQuantity("");
+      setIngredient("");
+    }
   };
 
   const handleInstructionChange = event => {
@@ -66,28 +93,73 @@ const AddRecipe = () => {
 
   const handleAddInstruction = event => {
     event.preventDefault();
-    setInstructions([...instructions, instruction]);
-    setInstruction("");
+
+    if (instruction !== "") {
+      const instObj = {
+        step: instruction
+      };
+
+      setInstructions([...instructions, instObj]);
+      setInstruction("");
+    }
   };
 
-  const handleSubmit = event => {
+  const handleSubmit = async event => {
     event.preventDefault();
 
-    console.log(coverPhoto);
-    console.log(videoUrl);
-    console.log(recipeName);
-    console.log(description);
-    console.log(inspiration);
+    try {
+      const response = await fetch(apiUrl, {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          coverPhoto,
+          photos,
+          videoUrl,
+          recipeName,
+          description,
+          inspiration,
+          ingredients,
+          instructions
+        })
+      });
 
-    console.log(ingredients);
+      if (response.ok) {
+        setCoverPhoto("");
+        setPhotos([]);
 
-    console.log(instructions);
+        setVideoUrl("");
+        setRecipeName("");
+        setDescription("");
+        setInspiration("");
+
+        setIngredients([]);
+        setQuantity("");
+        setIngredient("");
+
+        setInstructions([]);
+        setInstruction("");
+
+        setIsSuccess(!isSuccess);
+      } else {
+        console.log("Cannot add recipe.");
+      }
+    } catch (error) {
+      const { response } = error;
+      console.log("something went wrong");
+      throw new Error(error);
+    }
   };
 
   return (
     <Fragment>
       <div className="add-recipe">
         <h1>Add a Recipe</h1>
+
+        {isSuccess && <p>New recipe has been added successfully!</p>}
+
         <form onSubmit={handleSubmit}>
           <label htmlFor="cover-photo">Cover Photo</label>
           <input
@@ -96,6 +168,22 @@ const AddRecipe = () => {
             value={coverPhoto}
             onChange={handleCoverPhotoChange}
           />
+          <br />
+
+          <label>Photos</label>
+
+          <br />
+          <ul>
+            {photos.map((photo, index) => {
+              return <li key={`photo-${index}`}>{photo.url}</li>;
+            })}
+          </ul>
+
+          <br />
+          <input type="text" value={photo} onChange={handlePhotoChange} />
+          <button onClick={handleAddPhoto} disabled={photo === ""}>
+            Add photo
+          </button>
           <br />
 
           <label htmlFor="video">Video URL</label>
@@ -123,7 +211,7 @@ const AddRecipe = () => {
             id="description"
             value={description}
             onChange={handleDescriptionChange}
-          ></textarea>
+          />
           <br />
 
           <label htmlFor="cuisine">Cuisine</label>
@@ -157,32 +245,44 @@ const AddRecipe = () => {
           </ul>
           <br />
 
-          <input type="text" value={quantity} onChange={handleQuantityChange} />
+          <input
+            type="text"
+            value={quantity}
+            placeholder="Amount"
+            onChange={handleQuantityChange}
+          />
           <input
             type="text"
             placeholder="Ingredient"
             value={ingredient}
             onChange={handleIngredientChange}
           />
-          <button onClick={handleAddIngredient}>Add ingredient</button>
+          <button
+            onClick={handleAddIngredient}
+            disabled={quantity === "" || ingredient === ""}
+          >
+            Add ingredient
+          </button>
           <br />
 
           <label>Instructions</label>
           <br />
           <ol>
             {instructions.map((ins, index) => {
-              return <li key={`instruction-${index}`}>{ins}</li>;
+              return <li key={`instruction-${index}`}>{ins.step}</li>;
             })}
           </ol>
           <br />
 
-          <input
+          <textarea
             type="text"
             placeholder="Add instruction"
             value={instruction}
             onChange={handleInstructionChange}
           />
-          <button onClick={handleAddInstruction}>Add instruction</button>
+          <button onClick={handleAddInstruction} disabled={instruction === ""}>
+            Add instruction
+          </button>
           <br />
 
           <input type="submit" value="Add recipe" />

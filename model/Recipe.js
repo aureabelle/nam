@@ -12,9 +12,16 @@ const ingredientSchema = new mongoose.Schema({
 });
 
 const instructionSchema = new mongoose.Schema({
-  text: {
+  step: {
     type: String,
-    required: true
+    required: false
+  }
+});
+
+const photoSchema = new mongoose.Schema({
+  url: {
+    type: String,
+    required: false
   }
 });
 
@@ -39,7 +46,8 @@ const recipeSchema = new mongoose.Schema({
   videoUrl: {
     type: String,
     required: false
-  }
+  },
+  photos: [photoSchema]
 });
 
 module.exports = mongoose.model("Recipe", recipeSchema);

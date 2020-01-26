@@ -9,18 +9,22 @@ router.get("/", verify, (req, res) => {
 
 router.post("/add-recipe", async (req, res) => {
   const recipe = new Recipe({
-    name: req.body.name,
-    ingredients: req.body.ingredients,
-    instructions: req.body.instructions,
-    inspiration: req.body.inspiration,
-    description: req.body.description,
     coverPhoto: req.body.coverPhoto,
-    videoUrl: req.body.videoUrl
+    photos: req.body.photos,
+    videoUrl: req.body.videoUrl,
+    name: req.body.recipeName,
+    description: req.body.description,
+    inspiration: req.body.inspiration,
+    ingredients: req.body.ingredients,
+    instructions: req.body.instructions
   });
 
   try {
     const savedRecipe = await recipe.save();
-    res.send("Recipe added!");
+    res.send({
+      recipe_id: recipe._id,
+      message: `${recipe.name} has been added successfully.`
+    });
   } catch (error) {
     console.log(error);
     res.status(400).send(error);
