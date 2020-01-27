@@ -1,4 +1,5 @@
 const express = require("express");
+const bodyParser = require("body-parser");
 const next = require("next");
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
@@ -34,6 +35,9 @@ app.prepare().then(() => {
   // Routes Middleware
   server.use("/api/user", authRoute);
   server.use("/api/admin", adminRoute);
+
+  server.use(bodyParser.urlencoded({ extended: true }));
+  server.use(bodyParser.json());
 
   server.get("*", (req, res) => {
     return handle(req, res);

@@ -1,9 +1,11 @@
 import { Fragment, useContext, useState } from "react";
 import fetch from "isomorphic-unfetch";
 
+import RecipeForm from "./form";
+
 import { RecipeContext } from "../../context/recipe-context";
 
-const AddRecipe = ({ apiUrl }) => {
+const AddRecipe = ({ addRecipeApi, props }) => {
   const recipeContext = useContext(RecipeContext);
   const { cuisine } = recipeContext;
 
@@ -60,8 +62,10 @@ const AddRecipe = ({ apiUrl }) => {
     setDescription(event.target.value);
   };
 
-  const handleCuisineChange = event => {
-    setInspiration(event.target.value);
+  const handleCuisineChange = value => {
+    if (value !== "") {
+      setInspiration(value);
+    }
   };
 
   const handleQuantityChange = event => {
@@ -108,7 +112,7 @@ const AddRecipe = ({ apiUrl }) => {
     event.preventDefault();
 
     try {
-      const response = await fetch(apiUrl, {
+      const response = await fetch(addRecipeApi, {
         method: "POST",
         headers: {
           Accept: "application/json",
@@ -156,137 +160,37 @@ const AddRecipe = ({ apiUrl }) => {
   return (
     <Fragment>
       <div className="add-recipe">
-        <h1>Add a Recipe</h1>
-
         {isSuccess && <p>New recipe has been added successfully!</p>}
 
-        <form onSubmit={handleSubmit}>
-          <label htmlFor="cover-photo">Cover Photo</label>
-          <input
-            type="text"
-            placeholder="Enter cover photo URL"
-            value={coverPhoto}
-            onChange={handleCoverPhotoChange}
-          />
-          <br />
-
-          <label>Photos</label>
-
-          <br />
-          <ul>
-            {photos.map((photo, index) => {
-              return <li key={`photo-${index}`}>{photo.url}</li>;
-            })}
-          </ul>
-
-          <br />
-          <input type="text" value={photo} onChange={handlePhotoChange} />
-          <button onClick={handleAddPhoto} disabled={photo === ""}>
-            Add photo
-          </button>
-          <br />
-
-          <label htmlFor="video">Video URL</label>
-          <input
-            type="text"
-            placeholder="Enter video URL"
-            id="video"
-            value={videoUrl}
-            onChange={handleVideoUrl}
-          />
-          <br />
-
-          <label htmlFor="recipe-name">Recipe Name</label>
-          <input
-            type="text"
-            placeholder="Enter recipe name"
-            id="recipe-name"
-            value={recipeName}
-            onChange={handleRecipeNameChange}
-          />
-          <br />
-
-          <label htmlFor="description">Description</label>
-          <textarea
-            id="description"
-            value={description}
-            onChange={handleDescriptionChange}
-          />
-          <br />
-
-          <label htmlFor="cuisine">Cuisine</label>
-          <select
-            id="cuisine"
-            defaultValue={inspiration}
-            onChange={handleCuisineChange}
-          >
-            <option value="">Select Cuisine</option>
-
-            {cuisine.map((item, index) => {
-              return (
-                <option key={`cuisine-${index}`} value={item.value}>
-                  {item.name}
-                </option>
-              );
-            })}
-          </select>
-          <br />
-
-          <label>Ingredients</label>
-          <br />
-          <ul>
-            {ingredients.map((ing, index) => {
-              return (
-                <li key={`ingredient-${index}`}>
-                  {ing.quantity} -- {ing.name}
-                </li>
-              );
-            })}
-          </ul>
-          <br />
-
-          <input
-            type="text"
-            value={quantity}
-            placeholder="Amount"
-            onChange={handleQuantityChange}
-          />
-          <input
-            type="text"
-            placeholder="Ingredient"
-            value={ingredient}
-            onChange={handleIngredientChange}
-          />
-          <button
-            onClick={handleAddIngredient}
-            disabled={quantity === "" || ingredient === ""}
-          >
-            Add ingredient
-          </button>
-          <br />
-
-          <label>Instructions</label>
-          <br />
-          <ol>
-            {instructions.map((ins, index) => {
-              return <li key={`instruction-${index}`}>{ins.step}</li>;
-            })}
-          </ol>
-          <br />
-
-          <textarea
-            type="text"
-            placeholder="Add instruction"
-            value={instruction}
-            onChange={handleInstructionChange}
-          />
-          <button onClick={handleAddInstruction} disabled={instruction === ""}>
-            Add instruction
-          </button>
-          <br />
-
-          <input type="submit" value="Add recipe" />
-        </form>
+        <RecipeForm
+          handleSubmit={handleSubmit}
+          coverPhoto={coverPhoto}
+          handleCoverPhotoChange={handleCoverPhotoChange}
+          photos={photos}
+          photo={photo}
+          handlePhotoChange={handlePhotoChange}
+          handleAddPhoto={handleAddPhoto}
+          videoUrl={videoUrl}
+          handleVideoUrl={handleVideoUrl}
+          recipeName={recipeName}
+          handleRecipeNameChange={handleRecipeNameChange}
+          description={description}
+          handleDescriptionChange={handleDescriptionChange}
+          inspiration={inspiration}
+          handleCuisineChange={handleCuisineChange}
+          cuisine={cuisine}
+          ingredients={ingredients}
+          quantity={quantity}
+          handleQuantityChange={handleQuantityChange}
+          ingredient={ingredient}
+          handleIngredientChange={handleIngredientChange}
+          handleAddIngredient={handleAddIngredient}
+          instructions={instructions}
+          instruction={instruction}
+          handleInstructionChange={handleInstructionChange}
+          handleAddInstruction={handleAddInstruction}
+          submitButtonText="Add recipe"
+        />
       </div>
     </Fragment>
   );
