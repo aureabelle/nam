@@ -8,11 +8,6 @@ router.get("/", verify, (req, res) => {
 });
 
 router.get("/recipes", async (req, res) => {
-  // const recipe = await Recipe.find();
-  // if (!recipe) return res.status(400).send("No recipe found");
-
-  // console.log(recipe);
-
   try {
     let r = Recipe.find();
     r.sort({ createdAt: -1 });
@@ -25,7 +20,7 @@ router.get("/recipes", async (req, res) => {
   }
 });
 
-router.post("/add-recipe", async (req, res) => {
+router.post("/add", async (req, res) => {
   const recipe = new Recipe({
     coverPhoto: req.body.coverPhoto,
     photos: req.body.photos,

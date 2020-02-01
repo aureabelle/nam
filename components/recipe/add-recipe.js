@@ -5,7 +5,7 @@ import RecipeForm from "./form";
 
 import { RecipeContext } from "../../context/recipe-context";
 
-const AddRecipe = ({ addRecipeApi, props }) => {
+const AddRecipe = ({ addRecipeApi }) => {
   const recipeContext = useContext(RecipeContext);
   const { cuisine } = recipeContext;
 

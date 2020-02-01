@@ -7,10 +7,16 @@ import { RecipeProvider } from "../../context/recipe-context";
 import AdminLayout from "../../components/admin/layout";
 import RecipeList from "../../components/recipe/recipe-list";
 import AddRecipe from "../../components/recipe/add-recipe";
+import EditRecipe from "../../components/recipe/edit-recipe";
+import ViewRecipe from "../../components/recipe/view-recipe";
 
 const AdminRecipes = ({ addRecipeApi, allRecipesApi }) => {
   const [isAdding, setIsAdding] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
+  const [isViewing, setIsViewing] = useState(false);
+
   const [recipes, setRecipes] = useState([]);
+  const [recipe, setRecipe] = useState({});
 
   const handleAddRecipe = () => {
     setIsAdding(true);
@@ -18,6 +24,26 @@ const AdminRecipes = ({ addRecipeApi, allRecipesApi }) => {
 
   const handleCloseAddRecipe = () => {
     setIsAdding(false);
+  };
+
+  const handleEditRecipe = (event, recipe) => {
+    event.preventDefault();
+    setIsEditing(true);
+    setRecipe(recipe);
+  };
+
+  const handleCloseEditRecipe = () => {
+    setIsEditing(false);
+  };
+
+  const handleCloseViewRecipe = () => {
+    setIsViewing(false);
+  };
+
+  const handleViewProfile = (event, recipe) => {
+    event.preventDefault();
+    setIsViewing(true);
+    setRecipe(recipe);
   };
 
   const getAllRecipes = async () => {
@@ -46,10 +72,14 @@ const AdminRecipes = ({ addRecipeApi, allRecipesApi }) => {
             <Button type="primary" onClick={handleAddRecipe}>
               Add Recipe
             </Button>
-            <RecipeList recipes={recipes} />
+            <RecipeList
+              recipes={recipes}
+              handleEditRecipe={handleEditRecipe}
+              handleViewProfile={handleViewProfile}
+            />
 
             <Drawer
-              width={520}
+              width={600}
               title="Add New Recipe"
               placement="right"
               closable={false}
@@ -57,6 +87,28 @@ const AdminRecipes = ({ addRecipeApi, allRecipesApi }) => {
               visible={isAdding}
             >
               <AddRecipe addRecipeApi={addRecipeApi} />
+            </Drawer>
+
+            <Drawer
+              width={600}
+              title="Edit Recipe"
+              placement="right"
+              closable={false}
+              onClose={handleCloseEditRecipe}
+              visible={isEditing}
+            >
+              <EditRecipe recipe={recipe} />
+            </Drawer>
+
+            <Drawer
+              width={600}
+              title="View Recipe"
+              placement="right"
+              closable={false}
+              onClose={handleCloseViewRecipe}
+              visible={isViewing}
+            >
+              <ViewRecipe recipe={recipe} />
             </Drawer>
           </div>
         </RecipeProvider>
@@ -70,21 +122,13 @@ AdminRecipes.getInitialProps = async ({ req }) => {
 
   const addRecipeApi = process.browser
     ? `${protocol}://${window.location.host}/api/admin/add-recipe`
-    : `${protocol}://${req.headers.host}/api/admin/add-recipe`;
+    : `${protocol}://${req.headers.host}/api/admin/add`;
 
   const allRecipesApi = process.browser
     ? `${protocol}://${window.location.host}/api/admin/recipes`
     : `${protocol}://${req.headers.host}/api/admin/recipes`;
 
-  // const res = await fetch(allRecipesApi);
-  // const data = await res.json();
-
-  // console.log(res);
-
-  // console.log(`Show data fetched. Count: ${data.length}`);
-
   return {
-    // recipes: data.map(entry => entry.recipe),
     addRecipeApi,
     allRecipesApi
   };
