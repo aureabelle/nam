@@ -6,6 +6,8 @@ import CoverPhoto from "./cover-photo";
 import Photos from "./photos";
 import VideoLink from "./video-link";
 import Name from "./name";
+import AltName from "./alt-name";
+import Url from "./url";
 import Description from "./description";
 import Cuisine from "./cuisine";
 import Ingredients from "./ingredients";
@@ -26,6 +28,12 @@ const RecipeForm = ({
 
   recipeName,
   handleRecipeNameChange,
+
+  altName,
+  handleAltNameChange,
+
+  url,
+  handleUrlChange,
 
   description,
   handleDescriptionChange,
@@ -70,6 +78,13 @@ const RecipeForm = ({
             recipeName={recipeName}
             handleRecipeNameChange={handleRecipeNameChange}
           />
+
+          <AltName
+            altName={altName}
+            handleAltNameChange={handleAltNameChange}
+          />
+
+          <Url url={url} handleUrlChange={handleUrlChange} />
 
           <Description
             description={description}

@@ -30,6 +30,13 @@ const recipeSchema = new mongoose.Schema({
     type: String,
     required: true
   },
+  altName: {
+    type: String
+  },
+  url: {
+    type: String,
+    required: true
+  },
   ingredients: [ingredientSchema],
   instructions: [instructionSchema],
   description: {

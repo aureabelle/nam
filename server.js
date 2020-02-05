@@ -12,6 +12,7 @@ const handle = app.getRequestHandler();
 // Import Routes
 const authRoute = require("./routes/auth");
 const adminRoute = require("./routes/admin");
+const recipeRoute = require("./routes/recipe");
 
 dotenv.config();
 
@@ -35,6 +36,7 @@ app.prepare().then(() => {
   // Routes Middleware
   server.use("/api/user", authRoute);
   server.use("/api/admin", adminRoute);
+  server.use("/api/recipes", recipeRoute);
 
   server.use(bodyParser.urlencoded({ extended: true }));
   server.use(bodyParser.json());

@@ -27,6 +27,12 @@ const ViewRecipe = ({ recipe }) => {
         >
           <Descriptions.Item label="Name">{recipe.name}</Descriptions.Item>
 
+          <Descriptions.Item label="Alt Name">
+            {recipe.altName}
+          </Descriptions.Item>
+
+          <Descriptions.Item label="URL">{recipe.url}</Descriptions.Item>
+
           <Descriptions.Item label="Video Embed URL">
             {recipe.videoUrl}
           </Descriptions.Item>

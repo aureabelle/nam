@@ -17,6 +17,8 @@ const AddRecipe = ({ addRecipeApi }) => {
   const [videoUrl, setVideoUrl] = useState("");
 
   const [recipeName, setRecipeName] = useState("");
+  const [altName, setAltName] = useState("");
+  const [url, setUrl] = useState("");
   const [description, setDescription] = useState("");
   const [inspiration, setInspiration] = useState("");
 
@@ -56,6 +58,14 @@ const AddRecipe = ({ addRecipeApi }) => {
 
   const handleRecipeNameChange = event => {
     setRecipeName(event.target.value);
+  };
+
+  const handleAltNameChange = event => {
+    setAltName(event.target.value);
+  };
+
+  const handleUrlChange = event => {
+    setUrl(event.target.value);
   };
 
   const handleDescriptionChange = event => {
@@ -123,6 +133,8 @@ const AddRecipe = ({ addRecipeApi }) => {
           photos,
           videoUrl,
           recipeName,
+          altName,
+          url,
           description,
           inspiration,
           ingredients,
@@ -136,6 +148,8 @@ const AddRecipe = ({ addRecipeApi }) => {
 
         setVideoUrl("");
         setRecipeName("");
+        setAltName("");
+        setUrl("");
         setDescription("");
         setInspiration("");
 
@@ -174,6 +188,10 @@ const AddRecipe = ({ addRecipeApi }) => {
           handleVideoUrl={handleVideoUrl}
           recipeName={recipeName}
           handleRecipeNameChange={handleRecipeNameChange}
+          altName={altName}
+          handleAltNameChange={handleAltNameChange}
+          url={url}
+          handleUrlChange={handleUrlChange}
           description={description}
           handleDescriptionChange={handleDescriptionChange}
           inspiration={inspiration}

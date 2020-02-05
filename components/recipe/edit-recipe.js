@@ -1,10 +1,11 @@
 import { Fragment, useState, useEffect, useContext } from "react";
+import fetch from "isomorphic-unfetch";
 
 import { RecipeContext } from "../../context/recipe-context";
 
 import RecipeForm from "./form";
 
-const EditRecipe = ({ recipe }) => {
+const EditRecipe = ({ recipe, editRecipeApi }) => {
   const recipeContext = useContext(RecipeContext);
   const { cuisine } = recipeContext;
 
@@ -16,6 +17,8 @@ const EditRecipe = ({ recipe }) => {
   const [videoUrl, setVideoUrl] = useState("");
 
   const [recipeName, setRecipeName] = useState("");
+  const [altName, setAltName] = useState("");
+  const [url, setUrl] = useState("");
   const [description, setDescription] = useState("");
   const [inspiration, setInspiration] = useState("");
 
@@ -53,6 +56,14 @@ const EditRecipe = ({ recipe }) => {
 
   const handleRecipeNameChange = event => {
     setRecipeName(event.target.value);
+  };
+
+  const handleAltNameChange = event => {
+    setAltName(event.target.value);
+  };
+
+  const handleUrlChange = event => {
+    setUrl(event.target.value);
   };
 
   const handleDescriptionChange = event => {
@@ -105,7 +116,35 @@ const EditRecipe = ({ recipe }) => {
     }
   };
 
-  const handleSubmit = async event => {};
+  const handleSubmit = async event => {
+    event.preventDefault();
+
+    try {
+      const response = await fetch(editRecipeApi, {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          coverPhoto,
+          photos,
+          videoUrl,
+          recipeName,
+          altName,
+          url,
+          description,
+          inspiration,
+          ingredients,
+          instructions
+        })
+      });
+    } catch (error) {
+      const { response } = error;
+      console.log("something went wrong");
+      throw new Error(error);
+    }
+  };
 
   useEffect(() => {
     if (recipe) {
@@ -113,6 +152,8 @@ const EditRecipe = ({ recipe }) => {
       setPhotos(recipe.photos);
       setVideoUrl(recipe.videoUrl);
       setRecipeName(recipe.name);
+      setAltName(recipe.altName);
+      setUrl(recipe.url);
       setDescription(recipe.description);
       setInspiration(recipe.inspiration);
       setIngredients(recipe.ingredients);
@@ -123,8 +164,6 @@ const EditRecipe = ({ recipe }) => {
   return (
     <Fragment>
       <div className="edit-recipe">
-        <h1>Edit Recipe</h1>
-
         <RecipeForm
           handleSubmit={handleSubmit}
           coverPhoto={coverPhoto}
@@ -137,6 +176,10 @@ const EditRecipe = ({ recipe }) => {
           handleVideoUrl={handleVideoUrl}
           recipeName={recipeName}
           handleRecipeNameChange={handleRecipeNameChange}
+          altName={altName}
+          handleAltNameChange={handleAltNameChange}
+          url={url}
+          handleUrlChange={handleUrlChange}
           description={description}
           handleDescriptionChange={handleDescriptionChange}
           inspiration={inspiration}
@@ -152,7 +195,7 @@ const EditRecipe = ({ recipe }) => {
           instruction={instruction}
           handleInstructionChange={handleInstructionChange}
           handleAddInstruction={handleAddInstruction}
-          submitButtonText="Add recipe"
+          submitButtonText="Update recipe"
         />
       </div>
     </Fragment>

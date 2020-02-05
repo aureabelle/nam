@@ -20,12 +20,14 @@ router.get("/recipes", async (req, res) => {
   }
 });
 
-router.post("/add", async (req, res) => {
+router.post("/add-recipe", async (req, res) => {
   const recipe = new Recipe({
     coverPhoto: req.body.coverPhoto,
     photos: req.body.photos,
     videoUrl: req.body.videoUrl,
     name: req.body.recipeName,
+    altName: req.body.altName,
+    url: req.body.url,
     description: req.body.description,
     inspiration: req.body.inspiration,
     ingredients: req.body.ingredients,

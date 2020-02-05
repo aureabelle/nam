@@ -122,7 +122,7 @@ AdminRecipes.getInitialProps = async ({ req }) => {
 
   const addRecipeApi = process.browser
     ? `${protocol}://${window.location.host}/api/admin/add-recipe`
-    : `${protocol}://${req.headers.host}/api/admin/add`;
+    : `${protocol}://${req.headers.host}/api/admin/add-recipe`;
 
   const allRecipesApi = process.browser
     ? `${protocol}://${window.location.host}/api/admin/recipes`
