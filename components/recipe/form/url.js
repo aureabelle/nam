@@ -6,6 +6,7 @@ const Url = ({ url, handleUrlChange }) => {
   return (
     <Fragment>
       <div className="url">
+        <h6>Clean URL</h6>
         <Form.Item>
           <Input
             type="text"

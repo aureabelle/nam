@@ -50,6 +50,12 @@ const EditRecipe = ({ recipe, editRecipeApi }) => {
     }
   };
 
+  const handleEditPhoto = (event, photo) => {
+    event.preventDefault();
+    const photoList = photos.filter(p => p !== photo);
+    setPhotos(photoList);
+  };
+
   const handleVideoUrl = event => {
     setVideoUrl(event.target.value);
   };
@@ -97,6 +103,13 @@ const EditRecipe = ({ recipe, editRecipeApi }) => {
       setQuantity("");
       setIngredient("");
     }
+  };
+
+  const handleEditIngredient = (event, ingredient) => {
+    event.preventDefault();
+
+    const ingList = ingredients.filter(i => i !== ingredient);
+    setIngredients(ingList);
   };
 
   const handleInstructionChange = event => {
@@ -159,7 +172,7 @@ const EditRecipe = ({ recipe, editRecipeApi }) => {
       setIngredients(recipe.ingredients);
       setInstructions(recipe.instructions);
     }
-  }, [setCoverPhoto]);
+  }, [recipe, setCoverPhoto]);
 
   return (
     <Fragment>
@@ -172,6 +185,7 @@ const EditRecipe = ({ recipe, editRecipeApi }) => {
           photo={photo}
           handlePhotoChange={handlePhotoChange}
           handleAddPhoto={handleAddPhoto}
+          handleEditPhoto={handleEditPhoto}
           videoUrl={videoUrl}
           handleVideoUrl={handleVideoUrl}
           recipeName={recipeName}
@@ -191,6 +205,7 @@ const EditRecipe = ({ recipe, editRecipeApi }) => {
           ingredient={ingredient}
           handleIngredientChange={handleIngredientChange}
           handleAddIngredient={handleAddIngredient}
+          handleEditIngredient={handleEditIngredient}
           instructions={instructions}
           instruction={instruction}
           handleInstructionChange={handleInstructionChange}

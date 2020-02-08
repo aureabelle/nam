@@ -22,6 +22,7 @@ const RecipeForm = ({
   photo,
   handlePhotoChange,
   handleAddPhoto,
+  handleEditPhoto,
 
   videoUrl,
   handleVideoUrl,
@@ -48,6 +49,7 @@ const RecipeForm = ({
   ingredient,
   handleIngredientChange,
   handleAddIngredient,
+  handleEditIngredient,
 
   instructions,
   instruction,
@@ -70,6 +72,7 @@ const RecipeForm = ({
             photo={photo}
             handlePhotoChange={handlePhotoChange}
             handleAddPhoto={handleAddPhoto}
+            handleEditPhoto={handleEditPhoto}
           />
 
           <VideoLink videoUrl={videoUrl} handleVideoUrl={handleVideoUrl} />
@@ -104,6 +107,7 @@ const RecipeForm = ({
             ingredient={ingredient}
             handleIngredientChange={handleIngredientChange}
             handleAddIngredient={handleAddIngredient}
+            handleEditIngredient={handleEditIngredient}
           />
 
           <Instructions

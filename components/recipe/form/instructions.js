@@ -1,6 +1,6 @@
 import { Fragment } from "react";
 
-import { Form, Input, Button } from "antd";
+import { Form, Input, Button, Empty } from "antd";
 const { TextArea } = Input;
 
 const Instructions = ({
@@ -14,11 +14,19 @@ const Instructions = ({
       <div className="instructions">
         <h6>Instructions</h6>
 
-        <ol>
-          {instructions.map((ins, index) => {
-            return <li key={`instruction-${index}`}>{ins.step}</li>;
-          })}
-        </ol>
+        {instructions.length !== 0 ? (
+          <ol className="instructions-list">
+            {instructions.map((ins, index) => {
+              return (
+                <li key={`instruction-${index}`} className="instruction">
+                  {ins.step}
+                </li>
+              );
+            })}
+          </ol>
+        ) : (
+          <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
+        )}
 
         <Form.Item>
           <TextArea
@@ -32,6 +40,12 @@ const Instructions = ({
           </Button>
         </Form.Item>
       </div>
+      <style jsx>{`
+        .instructions .instructions-list {
+          margin: 0;
+          padding: 0;
+        }
+      `}</style>
     </Fragment>
   );
 };

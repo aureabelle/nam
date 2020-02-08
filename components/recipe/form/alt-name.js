@@ -6,6 +6,7 @@ const AltName = ({ altName, handleAltNameChange }) => {
   return (
     <Fragment>
       <div className="alt-name">
+        <h6>Alternative Name (English Name)</h6>
         <Form.Item>
           <Input
             type="text"

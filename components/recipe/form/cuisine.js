@@ -7,6 +7,7 @@ const Cuisine = ({ inspiration, handleCuisineChange, cuisine }) => {
   return (
     <Fragment>
       <div className="cuisine">
+        <h6>Cuisine</h6>
         <Form.Item>
           <Select
             showSearch

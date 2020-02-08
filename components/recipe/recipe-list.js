@@ -1,34 +1,8 @@
-import { Fragment } from "react";
+import { Fragment, useState, useEffect } from "react";
 
 import { Table, Divider, Icon } from "antd";
 
 const RecipeList = ({ recipes, handleViewProfile, handleEditRecipe }) => {
-  const columns = [
-    {
-      title: "Name",
-      dataIndex: "name"
-    },
-    {
-      title: "Cuisine",
-      dataIndex: "cuisine"
-    },
-    {
-      title: "",
-      dataIndex: "",
-      render: record => (
-        <span>
-          <a onClick={event => handleViewProfile(event, record)}>
-            <Icon type="profile" />
-          </a>
-          <Divider type="vertical" />
-          <a onClick={event => handleEditRecipe(event, record)}>
-            <Icon type="edit" />
-          </a>
-        </span>
-      )
-    }
-  ];
-
   let data = [];
   if (recipes.length !== 0) {
     recipes.map((recipe, index) => {
@@ -48,6 +22,36 @@ const RecipeList = ({ recipes, handleViewProfile, handleEditRecipe }) => {
       data.push(rcp);
     });
   }
+
+  const [recipeList, setRecipeList] = useState([]);
+
+  const columns = [
+    {
+      title: "Name",
+      dataIndex: "name"
+    },
+    {
+      title: "Cuisine",
+      dataIndex: "cuisine"
+    },
+    {
+      title: "",
+      dataIndex: "",
+      render: record => {
+        return (
+          <span>
+            <a onClick={event => handleViewProfile(event, record)}>
+              <Icon type="profile" />
+            </a>
+            <Divider type="vertical" />
+            <a onClick={event => handleEditRecipe(event, record)}>
+              <Icon type="edit" />
+            </a>
+          </span>
+        );
+      }
+    }
+  ];
 
   return (
     <Fragment>

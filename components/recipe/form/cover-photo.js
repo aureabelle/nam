@@ -6,6 +6,10 @@ const CoverPhoto = ({ coverPhoto, handleCoverPhotoChange }) => {
   return (
     <Fragment>
       <div className="cover-photo">
+        <h6>Cover Photo</h6>
+        <div className="preview">
+          <img src={coverPhoto} />
+        </div>
         <Form.Item>
           <Input
             prefix={
@@ -19,6 +23,15 @@ const CoverPhoto = ({ coverPhoto, handleCoverPhotoChange }) => {
           />
         </Form.Item>
       </div>
+      <style jsx>{`
+        .cover-photo .preview {
+          height: 200px;
+        }
+
+        .cover-photo .preview img {
+          height: 100%;
+        }
+      `}</style>
     </Fragment>
   );
 };
