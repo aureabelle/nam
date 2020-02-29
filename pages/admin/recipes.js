@@ -10,9 +10,11 @@ import AddRecipe from "../../components/recipe/add-recipe";
 import EditRecipe from "../../components/recipe/edit-recipe";
 import ViewRecipe from "../../components/recipe/view-recipe";
 
-const AdminRecipes = ({ addRecipeApi, allRecipesApi }) => {
+const AdminRecipes = ({ addRecipeApi, allRecipesApi, editRecipeApi }) => {
   const [isAdding, setIsAdding] = useState(false);
+
   const [isEditing, setIsEditing] = useState(false);
+
   const [isViewing, setIsViewing] = useState(false);
 
   const [recipes, setRecipes] = useState([]);
@@ -51,7 +53,6 @@ const AdminRecipes = ({ addRecipeApi, allRecipesApi }) => {
       await fetch(allRecipesApi)
         .then(res => res.json())
         .then(data => {
-          console.log(data);
           setRecipes(data);
         });
     } catch (error) {
@@ -86,7 +87,10 @@ const AdminRecipes = ({ addRecipeApi, allRecipesApi }) => {
               onClose={handleCloseAddRecipe}
               visible={isAdding}
             >
-              <AddRecipe addRecipeApi={addRecipeApi} />
+              <AddRecipe
+                addRecipeApi={addRecipeApi}
+                setIsAdding={setIsAdding}
+              />
             </Drawer>
 
             <Drawer
@@ -97,7 +101,13 @@ const AdminRecipes = ({ addRecipeApi, allRecipesApi }) => {
               onClose={handleCloseEditRecipe}
               visible={isEditing}
             >
-              <EditRecipe recipe={recipe} />
+              <EditRecipe
+                recipe={recipe}
+                setRecipe={setRecipe}
+                getAllRecipes={getAllRecipes}
+                editRecipeApi={editRecipeApi}
+                setIsEditing={setIsEditing}
+              />
             </Drawer>
 
             <Drawer
@@ -124,12 +134,17 @@ AdminRecipes.getInitialProps = async ({ req }) => {
     ? `${protocol}://${window.location.host}/api/admin/add-recipe`
     : `${protocol}://${req.headers.host}/api/admin/add-recipe`;
 
+  const editRecipeApi = process.browser
+    ? `${protocol}://${window.location.host}/api/admin/edit-recipe`
+    : `${protocol}://${req.headers.host}/api/admin/edit-recipe`;
+
   const allRecipesApi = process.browser
     ? `${protocol}://${window.location.host}/api/admin/recipes`
     : `${protocol}://${req.headers.host}/api/admin/recipes`;
 
   return {
     addRecipeApi,
+    editRecipeApi,
     allRecipesApi
   };
 };

@@ -1,11 +1,19 @@
 import { Fragment, useState, useEffect, useContext } from "react";
 import fetch from "isomorphic-unfetch";
 
+import { notification } from "antd";
+
 import { RecipeContext } from "../../context/recipe-context";
 
 import RecipeForm from "./form";
 
-const EditRecipe = ({ recipe, editRecipeApi }) => {
+const EditRecipe = ({
+  recipe,
+  setRecipe,
+  getAllRecipes,
+  editRecipeApi,
+  setIsEditing
+}) => {
   const recipeContext = useContext(RecipeContext);
   const { cuisine } = recipeContext;
 
@@ -132,6 +140,8 @@ const EditRecipe = ({ recipe, editRecipeApi }) => {
   const handleSubmit = async event => {
     event.preventDefault();
 
+    const _id = recipe._id;
+
     try {
       const response = await fetch(editRecipeApi, {
         method: "POST",
@@ -140,6 +150,7 @@ const EditRecipe = ({ recipe, editRecipeApi }) => {
           "Content-Type": "application/json"
         },
         body: JSON.stringify({
+          _id,
           coverPhoto,
           photos,
           videoUrl,
@@ -152,11 +163,41 @@ const EditRecipe = ({ recipe, editRecipeApi }) => {
           instructions
         })
       });
+
+      const data = response.json();
+      data.then(d => {
+        const msg = d.message;
+
+        setRecipe({
+          _id,
+          coverPhoto,
+          photos,
+          videoUrl,
+          recipeName,
+          altName,
+          url,
+          description,
+          inspiration,
+          ingredients,
+          instructions
+        });
+        setIsEditing(false);
+        getAllRecipes();
+
+        openNotification("success", msg);
+      });
     } catch (error) {
       const { response } = error;
       console.log("something went wrong");
       throw new Error(error);
     }
+  };
+
+  const openNotification = (type, message) => {
+    notification[type]({
+      message,
+      placement: "bottomRight"
+    });
   };
 
   useEffect(() => {
@@ -172,7 +213,19 @@ const EditRecipe = ({ recipe, editRecipeApi }) => {
       setIngredients(recipe.ingredients);
       setInstructions(recipe.instructions);
     }
-  }, [recipe, setCoverPhoto]);
+  }, [
+    recipe,
+    setCoverPhoto,
+    setPhotos,
+    setVideoUrl,
+    setRecipeName,
+    setAltName,
+    setUrl,
+    setDescription,
+    setInspiration,
+    setIngredients,
+    setInstructions
+  ]);
 
   return (
     <Fragment>

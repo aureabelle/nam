@@ -122,6 +122,13 @@ const RecipeForm = ({
           </Button>
         </Form>
       </div>
+      <style jsx global>{`
+        .recipe-form h6 {
+          font-size: 12px;
+          font-weight: bold;
+          text-transform: uppercase;
+        }
+      `}</style>
     </Fragment>
   );
 };

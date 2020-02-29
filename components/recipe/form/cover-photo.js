@@ -25,7 +25,10 @@ const CoverPhoto = ({ coverPhoto, handleCoverPhotoChange }) => {
       </div>
       <style jsx>{`
         .cover-photo .preview {
+          background-color: #eaeaea;
           height: 200px;
+          padding: 10px;
+          text-align: center;
         }
 
         .cover-photo .preview img {

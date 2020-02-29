@@ -1,11 +1,13 @@
-import { Fragment, useContext, useState } from "react";
+import { Fragment, useContext, useState, useEffect } from "react";
 import fetch from "isomorphic-unfetch";
+
+import { notification } from "antd";
 
 import RecipeForm from "./form";
 
 import { RecipeContext } from "../../context/recipe-context";
 
-const AddRecipe = ({ addRecipeApi }) => {
+const AddRecipe = ({ addRecipeApi, setIsAdding }) => {
   const recipeContext = useContext(RecipeContext);
   const { cuisine } = recipeContext;
 
@@ -28,8 +30,6 @@ const AddRecipe = ({ addRecipeApi }) => {
 
   const [instructions, setInstructions] = useState([]);
   const [instruction, setInstruction] = useState("");
-
-  const [isSuccess, setIsSuccess] = useState(false);
 
   const handleCoverPhotoChange = event => {
     setCoverPhoto(event.target.value);
@@ -142,7 +142,14 @@ const AddRecipe = ({ addRecipeApi }) => {
         })
       });
 
-      if (response.ok) {
+      const data = response.json();
+      data.then(d => {
+        const msg = d.message;
+
+        setIsAdding(false);
+        openNotification("success", msg);
+
+        // Reset all the fields
         setCoverPhoto("");
         setPhotos([]);
 
@@ -159,11 +166,7 @@ const AddRecipe = ({ addRecipeApi }) => {
 
         setInstructions([]);
         setInstruction("");
-
-        setIsSuccess(!isSuccess);
-      } else {
-        console.log("Cannot add recipe.");
-      }
+      });
     } catch (error) {
       const { response } = error;
       console.log("something went wrong");
@@ -171,11 +174,16 @@ const AddRecipe = ({ addRecipeApi }) => {
     }
   };
 
+  const openNotification = (type, message) => {
+    notification[type]({
+      message,
+      placement: "bottomRight"
+    });
+  };
+
   return (
     <Fragment>
       <div className="add-recipe">
-        {isSuccess && <p>New recipe has been added successfully!</p>}
-
         <RecipeForm
           handleSubmit={handleSubmit}
           coverPhoto={coverPhoto}

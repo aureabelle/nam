@@ -42,7 +42,9 @@ const Photos = ({
       <style jsx>{`
         .photos .photo-list {
           align-items: flex-start;
+          background-color: #eaeaea;
           display: flex;
+          padding: 10px;
         }
 
         .photos .photo-list .photo {

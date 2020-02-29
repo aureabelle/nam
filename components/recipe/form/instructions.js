@@ -43,7 +43,14 @@ const Instructions = ({
       <style jsx>{`
         .instructions .instructions-list {
           margin: 0;
+          margin-bottom: 13px;
+          margin-left: 20px;
           padding: 0;
+        }
+
+        .instructions .instructions-list .instruction {
+          border-bottom: 1px dotted #e0e0e0;
+          padding: 3px 0;
         }
       `}</style>
     </Fragment>
