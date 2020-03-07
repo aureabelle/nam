@@ -1,13 +1,16 @@
 import { Fragment } from "react";
 
-import { Form, Input, Button, Empty } from "antd";
+import { Form, Input, Button, Icon, Empty } from "antd";
 const { TextArea } = Input;
 
 const Instructions = ({
   instructions,
+
   instruction,
   handleInstructionChange,
-  handleAddInstruction
+
+  handleAddInstruction,
+  handleEditInstruction
 }) => {
   return (
     <Fragment>
@@ -19,7 +22,10 @@ const Instructions = ({
             {instructions.map((ins, index) => {
               return (
                 <li key={`instruction-${index}`} className="instruction">
-                  {ins.step}
+                  <span>{ins.step}</span>
+                  <a onClick={event => handleEditInstruction(event, ins)}>
+                    <Icon type="delete" />
+                  </a>
                 </li>
               );
             })}
@@ -42,15 +48,29 @@ const Instructions = ({
       </div>
       <style jsx>{`
         .instructions .instructions-list {
+          counter-reset: section;
+          list-style-type: none;
           margin: 0;
           margin-bottom: 13px;
-          margin-left: 20px;
           padding: 0;
         }
 
         .instructions .instructions-list .instruction {
+          align-items: center;
           border-bottom: 1px dotted #e0e0e0;
+          display: flex;
+          justify-content: space-between;
           padding: 3px 0;
+        }
+
+        .instructions .instructions-list .instruction span {
+          flex: 1 0 auto;
+        }
+
+        .instructions .instructions-list .instruction::before {
+          counter-increment: section;
+          content: counter(section) ". ";
+          margin-right: 5px;
         }
       `}</style>
     </Fragment>

@@ -2,23 +2,22 @@ import { Fragment, useEffect, useState } from "react";
 
 import { Drawer, Button } from "antd";
 
-import { RecipeProvider } from "../../context/recipe-context";
-
 import AdminLayout from "../../components/admin/layout";
 import RecipeList from "../../components/recipe/recipe-list";
 import AddRecipe from "../../components/recipe/add-recipe";
 import EditRecipe from "../../components/recipe/edit-recipe";
 import ViewRecipe from "../../components/recipe/view-recipe";
 
-const AdminRecipes = ({ addRecipeApi, allRecipesApi, editRecipeApi }) => {
+const AdminRecipes = ({ addRecipeApi }) => {
+  // console.log(recipes);
+
   const [isAdding, setIsAdding] = useState(false);
 
-  const [isEditing, setIsEditing] = useState(false);
+  // const [isEditing, setIsEditing] = useState(false);
 
-  const [isViewing, setIsViewing] = useState(false);
+  // const [isViewing, setIsViewing] = useState(false);
 
-  const [recipes, setRecipes] = useState([]);
-  const [recipe, setRecipe] = useState({});
+  // const [recipe, setRecipe] = useState({});
 
   const handleAddRecipe = () => {
     setIsAdding(true);
@@ -60,68 +59,63 @@ const AdminRecipes = ({ addRecipeApi, allRecipesApi, editRecipeApi }) => {
   //   }
   // };
 
-  // useEffect(() => {
-  //   getAllRecipes();
-  // }, []);
+  useEffect(() => {
+    // getAllRecipes();
+  }, []);
 
   return (
     <Fragment>
       <AdminLayout>
-        <RecipeProvider>
-          <div className="admin-recipes">
-            <h1>Recipes</h1>
-            <Button type="primary" onClick={handleAddRecipe}>
-              Add Recipe
-            </Button>
-            <RecipeList
-              recipes={recipes}
-              handleEditRecipe={handleEditRecipe}
-              handleViewProfile={handleViewProfile}
+        <div className="admin-recipes">
+          <h1>Recipes</h1>
+          <Button type="primary" onClick={handleAddRecipe}>
+            Add Recipe
+          </Button>
+          {/* <RecipeList
+            recipes={recipes}
+            handleEditRecipe={handleEditRecipe}
+            handleViewProfile={handleViewProfile}
+          /> */}
+
+          <Drawer
+            width={600}
+            title="Add New Recipe"
+            placement="right"
+            closable={false}
+            onClose={handleCloseAddRecipe}
+            visible={isAdding}
+          >
+            <AddRecipe addRecipeApi={addRecipeApi} setIsAdding={setIsAdding} />
+          </Drawer>
+
+          {/* <Drawer
+            width={600}
+            title="Edit Recipe"
+            placement="right"
+            closable={false}
+            onClose={handleCloseEditRecipe}
+            visible={isEditing}
+          >
+            <EditRecipe
+              recipe={recipe}
+              setRecipe={setRecipe}
+              getAllRecipes={getAllRecipes}
+              editRecipeApi={editRecipeApi}
+              setIsEditing={setIsEditing}
             />
+          </Drawer>
 
-            <Drawer
-              width={600}
-              title="Add New Recipe"
-              placement="right"
-              closable={false}
-              onClose={handleCloseAddRecipe}
-              visible={isAdding}
-            >
-              <AddRecipe
-                addRecipeApi={addRecipeApi}
-                setIsAdding={setIsAdding}
-              />
-            </Drawer>
-
-            <Drawer
-              width={600}
-              title="Edit Recipe"
-              placement="right"
-              closable={false}
-              onClose={handleCloseEditRecipe}
-              visible={isEditing}
-            >
-              <EditRecipe
-                recipe={recipe}
-                setRecipe={setRecipe}
-                // getAllRecipes={getAllRecipes}
-                editRecipeApi={editRecipeApi}
-                setIsEditing={setIsEditing}
-              />
-            </Drawer>
-
-            <Drawer
-              width={600}
-              title="View Recipe"
-              placement="right"
-              closable={false}
-              onClose={handleCloseViewRecipe}
-              visible={isViewing}
-            >
-              <ViewRecipe recipe={recipe} />
-            </Drawer>
-          </div>
-        </RecipeProvider>
+          <Drawer
+            width={600}
+            title="View Recipe"
+            placement="right"
+            closable={false}
+            onClose={handleCloseViewRecipe}
+            visible={isViewing}
+          >
+            <ViewRecipe recipe={recipe} />
+          </Drawer> */}
+        </div>
       </AdminLayout>
     </Fragment>
   );
@@ -142,10 +136,24 @@ AdminRecipes.getInitialProps = async ({ req }) => {
     ? `${protocol}://${window.location.host}/api/admin/recipes`
     : `${protocol}://${req.headers.host}/api/admin/recipes`;
 
+  // Get all recipes
+  // let recipes = [];
+  // try {
+  //   await fetch(allRecipesApi)
+  //     .then(res => res.json())
+  //     .then(data => {
+  //       recipes = data;
+  //     });
+  // } catch (error) {
+  //   console.log("Error getting all recipes");
+  //   console.log(error);
+  // }
+
   return {
     addRecipeApi,
-    editRecipeApi,
-    allRecipesApi
+    editRecipeApi
+    // allRecipesApi
+    // recipes
   };
 };
 

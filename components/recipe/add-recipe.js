@@ -52,6 +52,15 @@ const AddRecipe = ({ addRecipeApi, setIsAdding }) => {
     }
   };
 
+  const handleEditPhoto = (event, photo) => {
+    event.preventDefault();
+
+    const editedList = photos.filter(p => p !== photo);
+
+    console.log(editedList);
+    setPhotos(editedList);
+  };
+
   const handleVideoUrl = event => {
     setVideoUrl(event.target.value);
   };
@@ -101,6 +110,15 @@ const AddRecipe = ({ addRecipeApi, setIsAdding }) => {
     }
   };
 
+  const handleEditIngredient = (event, ingredient) => {
+    event.preventDefault();
+
+    const editedList = ingredients.filter(i => i !== ingredient);
+
+    console.log(editedList);
+    setIngredients(editedList);
+  };
+
   const handleInstructionChange = event => {
     setInstruction(event.target.value);
   };
@@ -116,6 +134,15 @@ const AddRecipe = ({ addRecipeApi, setIsAdding }) => {
       setInstructions([...instructions, instObj]);
       setInstruction("");
     }
+  };
+
+  const handleEditInstruction = (event, instruction) => {
+    event.preventDefault();
+
+    const editedList = instructions.filter(i => i !== instruction);
+
+    console.log(editedList);
+    setInstructions(editedList);
   };
 
   const handleSubmit = async event => {
@@ -192,6 +219,7 @@ const AddRecipe = ({ addRecipeApi, setIsAdding }) => {
           photo={photo}
           handlePhotoChange={handlePhotoChange}
           handleAddPhoto={handleAddPhoto}
+          handleEditPhoto={handleEditPhoto}
           videoUrl={videoUrl}
           handleVideoUrl={handleVideoUrl}
           recipeName={recipeName}
@@ -211,10 +239,12 @@ const AddRecipe = ({ addRecipeApi, setIsAdding }) => {
           ingredient={ingredient}
           handleIngredientChange={handleIngredientChange}
           handleAddIngredient={handleAddIngredient}
+          handleEditIngredient={handleEditIngredient}
           instructions={instructions}
           instruction={instruction}
           handleInstructionChange={handleInstructionChange}
           handleAddInstruction={handleAddInstruction}
+          handleEditInstruction={handleEditInstruction}
           submitButtonText="Add recipe"
         />
       </div>

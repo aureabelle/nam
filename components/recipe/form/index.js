@@ -55,6 +55,7 @@ const RecipeForm = ({
   instruction,
   handleInstructionChange,
   handleAddInstruction,
+  handleEditInstruction,
 
   submitButtonText
 }) => {
@@ -115,6 +116,7 @@ const RecipeForm = ({
             instruction={instruction}
             handleInstructionChange={handleInstructionChange}
             handleAddInstruction={handleAddInstruction}
+            handleEditInstruction={handleEditInstruction}
           />
 
           <Button type="primary" htmlType="submit">
