@@ -48,21 +48,21 @@ const AdminRecipes = ({ addRecipeApi, allRecipesApi, editRecipeApi }) => {
     setRecipe(recipe);
   };
 
-  const getAllRecipes = async () => {
-    try {
-      await fetch(allRecipesApi)
-        .then(res => res.json())
-        .then(data => {
-          setRecipes(data);
-        });
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  // const getAllRecipes = async () => {
+  //   try {
+  //     await fetch(allRecipesApi)
+  //       .then(res => res.json())
+  //       .then(data => {
+  //         setRecipes(data);
+  //       });
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
 
-  useEffect(() => {
-    getAllRecipes();
-  }, []);
+  // useEffect(() => {
+  //   getAllRecipes();
+  // }, []);
 
   return (
     <Fragment>
@@ -104,7 +104,7 @@ const AdminRecipes = ({ addRecipeApi, allRecipesApi, editRecipeApi }) => {
               <EditRecipe
                 recipe={recipe}
                 setRecipe={setRecipe}
-                getAllRecipes={getAllRecipes}
+                // getAllRecipes={getAllRecipes}
                 editRecipeApi={editRecipeApi}
                 setIsEditing={setIsEditing}
               />

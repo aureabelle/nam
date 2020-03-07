@@ -1,5 +1,7 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { useRouter } from "next/router";
+
+import { RecipeContext } from "../../context/recipe-context";
 
 import Layout from "../../components/pages/layout";
 
@@ -7,6 +9,11 @@ import Layout from "../../components/pages/layout";
 
 const Recipe = () => {
   const router = useRouter();
+
+  const recipeContext = useContext(RecipeContext);
+  const { recipes } = recipeContext;
+
+  console.log(recipes);
 
   // const [recipe, setRecipe] = useState({});
 
@@ -22,8 +29,8 @@ const Recipe = () => {
         <div>-photos-</div>
 
         <div className="details">
-          <h1>{recipe.name}</h1>
-          <p>{recipe.description}</p>
+          {/* <h1>{recipe.name}</h1>
+          <p>{recipe.description}</p> */}
         </div>
 
         <div className="ingredient">-ingredients-</div>

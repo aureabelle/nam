@@ -1,15 +1,19 @@
 import { Fragment } from "react";
 
+import { RecipeProvider } from "../../context/recipe-context";
+
 import Header from "./header";
 
 const Layout = ({ children }) => {
   return (
     <Fragment>
-      <div className="layout">
-        <Header />
+      <RecipeProvider>
+        <div className="layout">
+          <Header />
 
-        <div className="container">{children}</div>
-      </div>
+          <div className="container">{children}</div>
+        </div>
+      </RecipeProvider>
     </Fragment>
   );
 };
