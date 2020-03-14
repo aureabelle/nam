@@ -1,8 +1,30 @@
-import { Fragment } from "react";
+import { Fragment, useState, useEffect } from "react";
 
 import { Table, Divider, Icon } from "antd";
 
 const RecipeList = ({ recipes, handleViewProfile, handleEditRecipe }) => {
+  let data = [];
+  if (recipes.length !== 0) {
+    recipes.map((recipe, index) => {
+      let rcp = {};
+
+      rcp.key = index;
+      rcp.coverPhoto = recipe.coverPhoto;
+      rcp.photos = recipe.photos;
+      rcp.videoUrl = recipe.videoUrl;
+      rcp.name = recipe.name;
+      rcp.altName = recipe.altName;
+      rcp.url = recipe.url;
+      rcp.description = recipe.description;
+      rcp.inspiration = recipe.inspiration;
+      rcp.ingredients = recipe.ingredients;
+      rcp.instructions = recipe.instructions;
+      rcp._id = recipe._id;
+
+      data.push(rcp);
+    });
+  }
+
   const columns = [
     {
       title: "Name",
@@ -15,39 +37,21 @@ const RecipeList = ({ recipes, handleViewProfile, handleEditRecipe }) => {
     {
       title: "",
       dataIndex: "",
-      render: record => (
-        <span>
-          <a onClick={event => handleViewProfile(event, record)}>
-            <Icon type="profile" />
-          </a>
-          <Divider type="vertical" />
-          <a onClick={event => handleEditRecipe(event, record)}>
-            <Icon type="edit" />
-          </a>
-        </span>
-      )
+      render: record => {
+        return (
+          <span>
+            <a onClick={event => handleViewProfile(event, record)}>
+              <Icon type="profile" />
+            </a>
+            <Divider type="vertical" />
+            <a onClick={event => handleEditRecipe(event, record)}>
+              <Icon type="edit" />
+            </a>
+          </span>
+        );
+      }
     }
   ];
-
-  let data = [];
-  if (recipes.length !== 0) {
-    recipes.map((recipe, index) => {
-      let rcp = {};
-
-      rcp.key = index;
-      rcp.name = recipe.name;
-      rcp.cuisine = recipe.inspiration;
-      rcp._id = recipe._id;
-      rcp.coverPhoto = recipe.coverPhoto;
-      rcp.photos = recipe.photos;
-      rcp.videoUrl = recipe.videoUrl;
-      rcp.description = recipe.description;
-      rcp.ingredients = recipe.ingredients;
-      rcp.instructions = recipe.instructions;
-
-      data.push(rcp);
-    });
-  }
 
   return (
     <Fragment>

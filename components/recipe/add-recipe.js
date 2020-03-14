@@ -1,11 +1,13 @@
-import { Fragment, useContext, useState } from "react";
+import { Fragment, useContext, useState, useEffect } from "react";
 import fetch from "isomorphic-unfetch";
+
+import { notification } from "antd";
 
 import RecipeForm from "./form";
 
 import { RecipeContext } from "../../context/recipe-context";
 
-const AddRecipe = ({ addRecipeApi }) => {
+const AddRecipe = ({ addRecipeApi, setIsAdding, getAllRecipes }) => {
   const recipeContext = useContext(RecipeContext);
   const { cuisine } = recipeContext;
 
@@ -17,6 +19,8 @@ const AddRecipe = ({ addRecipeApi }) => {
   const [videoUrl, setVideoUrl] = useState("");
 
   const [recipeName, setRecipeName] = useState("");
+  const [altName, setAltName] = useState("");
+  const [url, setUrl] = useState("");
   const [description, setDescription] = useState("");
   const [inspiration, setInspiration] = useState("");
 
@@ -26,8 +30,6 @@ const AddRecipe = ({ addRecipeApi }) => {
 
   const [instructions, setInstructions] = useState([]);
   const [instruction, setInstruction] = useState("");
-
-  const [isSuccess, setIsSuccess] = useState(false);
 
   const handleCoverPhotoChange = event => {
     setCoverPhoto(event.target.value);
@@ -50,12 +52,29 @@ const AddRecipe = ({ addRecipeApi }) => {
     }
   };
 
+  const handleEditPhoto = (event, photo) => {
+    event.preventDefault();
+
+    const editedList = photos.filter(p => p !== photo);
+
+    console.log(editedList);
+    setPhotos(editedList);
+  };
+
   const handleVideoUrl = event => {
     setVideoUrl(event.target.value);
   };
 
   const handleRecipeNameChange = event => {
     setRecipeName(event.target.value);
+  };
+
+  const handleAltNameChange = event => {
+    setAltName(event.target.value);
+  };
+
+  const handleUrlChange = event => {
+    setUrl(event.target.value);
   };
 
   const handleDescriptionChange = event => {
@@ -91,6 +110,15 @@ const AddRecipe = ({ addRecipeApi }) => {
     }
   };
 
+  const handleEditIngredient = (event, ingredient) => {
+    event.preventDefault();
+
+    const editedList = ingredients.filter(i => i !== ingredient);
+
+    console.log(editedList);
+    setIngredients(editedList);
+  };
+
   const handleInstructionChange = event => {
     setInstruction(event.target.value);
   };
@@ -108,6 +136,15 @@ const AddRecipe = ({ addRecipeApi }) => {
     }
   };
 
+  const handleEditInstruction = (event, instruction) => {
+    event.preventDefault();
+
+    const editedList = instructions.filter(i => i !== instruction);
+
+    console.log(editedList);
+    setInstructions(editedList);
+  };
+
   const handleSubmit = async event => {
     event.preventDefault();
 
@@ -123,6 +160,8 @@ const AddRecipe = ({ addRecipeApi }) => {
           photos,
           videoUrl,
           recipeName,
+          altName,
+          url,
           description,
           inspiration,
           ingredients,
@@ -130,12 +169,24 @@ const AddRecipe = ({ addRecipeApi }) => {
         })
       });
 
-      if (response.ok) {
+      const data = response.json();
+      data.then(d => {
+        const msg = d.message;
+
+        // Reload recipe list
+        getAllRecipes();
+
+        setIsAdding(false);
+        openNotification("success", msg);
+
+        // Reset all the fields
         setCoverPhoto("");
         setPhotos([]);
 
         setVideoUrl("");
         setRecipeName("");
+        setAltName("");
+        setUrl("");
         setDescription("");
         setInspiration("");
 
@@ -145,11 +196,7 @@ const AddRecipe = ({ addRecipeApi }) => {
 
         setInstructions([]);
         setInstruction("");
-
-        setIsSuccess(!isSuccess);
-      } else {
-        console.log("Cannot add recipe.");
-      }
+      });
     } catch (error) {
       const { response } = error;
       console.log("something went wrong");
@@ -157,11 +204,16 @@ const AddRecipe = ({ addRecipeApi }) => {
     }
   };
 
+  const openNotification = (type, message) => {
+    notification[type]({
+      message,
+      placement: "bottomRight"
+    });
+  };
+
   return (
     <Fragment>
       <div className="add-recipe">
-        {isSuccess && <p>New recipe has been added successfully!</p>}
-
         <RecipeForm
           handleSubmit={handleSubmit}
           coverPhoto={coverPhoto}
@@ -170,10 +222,15 @@ const AddRecipe = ({ addRecipeApi }) => {
           photo={photo}
           handlePhotoChange={handlePhotoChange}
           handleAddPhoto={handleAddPhoto}
+          handleEditPhoto={handleEditPhoto}
           videoUrl={videoUrl}
           handleVideoUrl={handleVideoUrl}
           recipeName={recipeName}
           handleRecipeNameChange={handleRecipeNameChange}
+          altName={altName}
+          handleAltNameChange={handleAltNameChange}
+          url={url}
+          handleUrlChange={handleUrlChange}
           description={description}
           handleDescriptionChange={handleDescriptionChange}
           inspiration={inspiration}
@@ -185,10 +242,12 @@ const AddRecipe = ({ addRecipeApi }) => {
           ingredient={ingredient}
           handleIngredientChange={handleIngredientChange}
           handleAddIngredient={handleAddIngredient}
+          handleEditIngredient={handleEditIngredient}
           instructions={instructions}
           instruction={instruction}
           handleInstructionChange={handleInstructionChange}
           handleAddInstruction={handleAddInstruction}
+          handleEditInstruction={handleEditInstruction}
           submitButtonText="Add recipe"
         />
       </div>

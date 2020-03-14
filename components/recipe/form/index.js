@@ -6,6 +6,8 @@ import CoverPhoto from "./cover-photo";
 import Photos from "./photos";
 import VideoLink from "./video-link";
 import Name from "./name";
+import AltName from "./alt-name";
+import Url from "./url";
 import Description from "./description";
 import Cuisine from "./cuisine";
 import Ingredients from "./ingredients";
@@ -20,12 +22,19 @@ const RecipeForm = ({
   photo,
   handlePhotoChange,
   handleAddPhoto,
+  handleEditPhoto,
 
   videoUrl,
   handleVideoUrl,
 
   recipeName,
   handleRecipeNameChange,
+
+  altName,
+  handleAltNameChange,
+
+  url,
+  handleUrlChange,
 
   description,
   handleDescriptionChange,
@@ -40,11 +49,13 @@ const RecipeForm = ({
   ingredient,
   handleIngredientChange,
   handleAddIngredient,
+  handleEditIngredient,
 
   instructions,
   instruction,
   handleInstructionChange,
   handleAddInstruction,
+  handleEditInstruction,
 
   submitButtonText
 }) => {
@@ -62,6 +73,7 @@ const RecipeForm = ({
             photo={photo}
             handlePhotoChange={handlePhotoChange}
             handleAddPhoto={handleAddPhoto}
+            handleEditPhoto={handleEditPhoto}
           />
 
           <VideoLink videoUrl={videoUrl} handleVideoUrl={handleVideoUrl} />
@@ -70,6 +82,13 @@ const RecipeForm = ({
             recipeName={recipeName}
             handleRecipeNameChange={handleRecipeNameChange}
           />
+
+          <AltName
+            altName={altName}
+            handleAltNameChange={handleAltNameChange}
+          />
+
+          <Url url={url} handleUrlChange={handleUrlChange} />
 
           <Description
             description={description}
@@ -89,6 +108,7 @@ const RecipeForm = ({
             ingredient={ingredient}
             handleIngredientChange={handleIngredientChange}
             handleAddIngredient={handleAddIngredient}
+            handleEditIngredient={handleEditIngredient}
           />
 
           <Instructions
@@ -96,6 +116,7 @@ const RecipeForm = ({
             instruction={instruction}
             handleInstructionChange={handleInstructionChange}
             handleAddInstruction={handleAddInstruction}
+            handleEditInstruction={handleEditInstruction}
           />
 
           <Button type="primary" htmlType="submit">
@@ -103,6 +124,13 @@ const RecipeForm = ({
           </Button>
         </Form>
       </div>
+      <style jsx global>{`
+        .recipe-form h6 {
+          font-size: 12px;
+          font-weight: bold;
+          text-transform: uppercase;
+        }
+      `}</style>
     </Fragment>
   );
 };

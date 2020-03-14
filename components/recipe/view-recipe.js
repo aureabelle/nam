@@ -3,6 +3,7 @@ import { Fragment } from "react";
 import { Descriptions, Carousel, List } from "antd";
 
 const ViewRecipe = ({ recipe }) => {
+  console.log(recipe);
   return (
     <Fragment>
       <div className="view-recipe">
@@ -27,11 +28,17 @@ const ViewRecipe = ({ recipe }) => {
         >
           <Descriptions.Item label="Name">{recipe.name}</Descriptions.Item>
 
+          <Descriptions.Item label="Alt Name">
+            {recipe.altName}
+          </Descriptions.Item>
+
+          <Descriptions.Item label="URL">{recipe.url}</Descriptions.Item>
+
           <Descriptions.Item label="Video Embed URL">
             {recipe.videoUrl}
           </Descriptions.Item>
 
-          <Descriptions.Item label="Cuisine">
+          <Descriptions.Item label="Inspiration">
             {recipe.inspiration}
           </Descriptions.Item>
 

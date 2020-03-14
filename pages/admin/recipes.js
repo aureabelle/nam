@@ -1,8 +1,8 @@
-import { Fragment, useEffect, useState } from "react";
+import { Fragment, useEffect, useState, useContext } from "react";
 
 import { Drawer, Button } from "antd";
 
-import { RecipeProvider } from "../../context/recipe-context";
+import { RecipeContext } from "../../context/recipe-context";
 
 import AdminLayout from "../../components/admin/layout";
 import RecipeList from "../../components/recipe/recipe-list";
@@ -10,12 +10,14 @@ import AddRecipe from "../../components/recipe/add-recipe";
 import EditRecipe from "../../components/recipe/edit-recipe";
 import ViewRecipe from "../../components/recipe/view-recipe";
 
-const AdminRecipes = ({ addRecipeApi, allRecipesApi }) => {
-  const [isAdding, setIsAdding] = useState(false);
-  const [isEditing, setIsEditing] = useState(false);
-  const [isViewing, setIsViewing] = useState(false);
+const AdminRecipes = ({ addRecipeApi, editRecipeApi, allRecipesApi }) => {
+  const recipeContext = useContext(RecipeContext);
+  const { recipes, setRecipes } = recipeContext;
 
-  const [recipes, setRecipes] = useState([]);
+  const [isAdding, setIsAdding] = useState(false);
+  const [isViewing, setIsViewing] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
+
   const [recipe, setRecipe] = useState({});
 
   const handleAddRecipe = () => {
@@ -26,10 +28,11 @@ const AdminRecipes = ({ addRecipeApi, allRecipesApi }) => {
     setIsAdding(false);
   };
 
-  const handleEditRecipe = (event, recipe) => {
+  const handleEditRecipe = (event, record) => {
     event.preventDefault();
     setIsEditing(true);
-    setRecipe(recipe);
+    setRecipe(record);
+    console.log(record);
   };
 
   const handleCloseEditRecipe = () => {
@@ -40,10 +43,11 @@ const AdminRecipes = ({ addRecipeApi, allRecipesApi }) => {
     setIsViewing(false);
   };
 
-  const handleViewProfile = (event, recipe) => {
+  const handleViewProfile = (event, record) => {
     event.preventDefault();
     setIsViewing(true);
-    setRecipe(recipe);
+    setRecipe(record);
+    console.log(record);
   };
 
   const getAllRecipes = async () => {
@@ -51,7 +55,6 @@ const AdminRecipes = ({ addRecipeApi, allRecipesApi }) => {
       await fetch(allRecipesApi)
         .then(res => res.json())
         .then(data => {
-          console.log(data);
           setRecipes(data);
         });
     } catch (error) {
@@ -66,53 +69,72 @@ const AdminRecipes = ({ addRecipeApi, allRecipesApi }) => {
   return (
     <Fragment>
       <AdminLayout>
-        <RecipeProvider>
-          <div className="admin-recipes">
+        <div className="admin-recipes">
+          <div className="header">
             <h1>Recipes</h1>
             <Button type="primary" onClick={handleAddRecipe}>
               Add Recipe
             </Button>
-            <RecipeList
-              recipes={recipes}
-              handleEditRecipe={handleEditRecipe}
-              handleViewProfile={handleViewProfile}
-            />
-
-            <Drawer
-              width={600}
-              title="Add New Recipe"
-              placement="right"
-              closable={false}
-              onClose={handleCloseAddRecipe}
-              visible={isAdding}
-            >
-              <AddRecipe addRecipeApi={addRecipeApi} />
-            </Drawer>
-
-            <Drawer
-              width={600}
-              title="Edit Recipe"
-              placement="right"
-              closable={false}
-              onClose={handleCloseEditRecipe}
-              visible={isEditing}
-            >
-              <EditRecipe recipe={recipe} />
-            </Drawer>
-
-            <Drawer
-              width={600}
-              title="View Recipe"
-              placement="right"
-              closable={false}
-              onClose={handleCloseViewRecipe}
-              visible={isViewing}
-            >
-              <ViewRecipe recipe={recipe} />
-            </Drawer>
           </div>
-        </RecipeProvider>
+
+          <RecipeList
+            recipes={recipes}
+            handleEditRecipe={handleEditRecipe}
+            handleViewProfile={handleViewProfile}
+          />
+
+          <Drawer
+            width={600}
+            title="Add New Recipe"
+            placement="right"
+            closable={false}
+            onClose={handleCloseAddRecipe}
+            visible={isAdding}
+          >
+            <AddRecipe
+              addRecipeApi={addRecipeApi}
+              setIsAdding={setIsAdding}
+              getAllRecipes={getAllRecipes}
+            />
+          </Drawer>
+
+          <Drawer
+            width={600}
+            title="Edit Recipe"
+            placement="right"
+            closable={false}
+            onClose={handleCloseEditRecipe}
+            visible={isEditing}
+          >
+            <EditRecipe
+              recipe={recipe}
+              setRecipe={setRecipe}
+              getAllRecipes={getAllRecipes}
+              editRecipeApi={editRecipeApi}
+              setIsEditing={setIsEditing}
+            />
+          </Drawer>
+
+          <Drawer
+            width={600}
+            title="View Recipe"
+            placement="right"
+            closable={false}
+            onClose={handleCloseViewRecipe}
+            visible={isViewing}
+          >
+            <ViewRecipe recipe={recipe} />
+          </Drawer>
+        </div>
       </AdminLayout>
+      <style jsx>{`
+        .admin-recipes .header {
+          align-items: center;
+          display: flex;
+          justify-content: space-between;
+          margin-bottom: 20px;
+        }
+      `}</style>
     </Fragment>
   );
 };
@@ -122,7 +144,11 @@ AdminRecipes.getInitialProps = async ({ req }) => {
 
   const addRecipeApi = process.browser
     ? `${protocol}://${window.location.host}/api/admin/add-recipe`
-    : `${protocol}://${req.headers.host}/api/admin/add`;
+    : `${protocol}://${req.headers.host}/api/admin/add-recipe`;
+
+  const editRecipeApi = process.browser
+    ? `${protocol}://${window.location.host}/api/admin/edit-recipe`
+    : `${protocol}://${req.headers.host}/api/admin/edit-recipe`;
 
   const allRecipesApi = process.browser
     ? `${protocol}://${window.location.host}/api/admin/recipes`
@@ -130,6 +156,7 @@ AdminRecipes.getInitialProps = async ({ req }) => {
 
   return {
     addRecipeApi,
+    editRecipeApi,
     allRecipesApi
   };
 };

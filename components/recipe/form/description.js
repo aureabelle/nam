@@ -7,6 +7,7 @@ const Description = ({ description, handleDescriptionChange }) => {
   return (
     <Fragment>
       <div className="description">
+        <h6>Description</h6>
         <Form.Item>
           <TextArea
             placeholder="Enter description"
