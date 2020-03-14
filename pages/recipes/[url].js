@@ -5,8 +5,6 @@ import { RecipeContext } from "../../context/recipe-context";
 
 import Layout from "../../components/pages/layout";
 
-// import { recipes } from "../../data/recipes";
-
 const Recipe = () => {
   const router = useRouter();
 

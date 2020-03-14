@@ -9,21 +9,21 @@ const RecipeList = ({ recipes, handleViewProfile, handleEditRecipe }) => {
       let rcp = {};
 
       rcp.key = index;
-      rcp.name = recipe.name;
-      rcp.cuisine = recipe.inspiration;
-      rcp._id = recipe._id;
       rcp.coverPhoto = recipe.coverPhoto;
       rcp.photos = recipe.photos;
       rcp.videoUrl = recipe.videoUrl;
+      rcp.name = recipe.name;
+      rcp.altName = recipe.altName;
+      rcp.url = recipe.url;
       rcp.description = recipe.description;
+      rcp.inspiration = recipe.inspiration;
       rcp.ingredients = recipe.ingredients;
       rcp.instructions = recipe.instructions;
+      rcp._id = recipe._id;
 
       data.push(rcp);
     });
   }
-
-  const [recipeList, setRecipeList] = useState([]);
 
   const columns = [
     {

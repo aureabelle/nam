@@ -38,8 +38,8 @@ const ViewRecipe = ({ recipe }) => {
             {recipe.videoUrl}
           </Descriptions.Item>
 
-          <Descriptions.Item label="Cuisine">
-            {recipe.cuisine}
+          <Descriptions.Item label="Inspiration">
+            {recipe.inspiration}
           </Descriptions.Item>
 
           <Descriptions.Item label="Description">

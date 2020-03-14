@@ -7,7 +7,7 @@ import RecipeForm from "./form";
 
 import { RecipeContext } from "../../context/recipe-context";
 
-const AddRecipe = ({ addRecipeApi, setIsAdding }) => {
+const AddRecipe = ({ addRecipeApi, setIsAdding, getAllRecipes }) => {
   const recipeContext = useContext(RecipeContext);
   const { cuisine } = recipeContext;
 
@@ -172,6 +172,9 @@ const AddRecipe = ({ addRecipeApi, setIsAdding }) => {
       const data = response.json();
       data.then(d => {
         const msg = d.message;
+
+        // Reload recipe list
+        getAllRecipes();
 
         setIsAdding(false);
         openNotification("success", msg);
