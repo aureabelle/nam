@@ -55,33 +55,47 @@ const Recipe = ({ allRecipesApi }) => {
                     style={{ backgroundImage: `url(${recipe.coverPhoto})` }}
                   />
 
-                  <div className="details">
-                    <h1>{recipe.name}</h1>
-                    <h2>{recipe.altName}</h2>
-                    <p>{recipe.description}</p>
-                  </div>
+                  <div className="recipe-info">
+                    <div className="recipe-details">
+                      <div className="details">
+                        <h1>{recipe.name}</h1>
+                        <h2>{recipe.altName}</h2>
+                        <p>{recipe.description}</p>
+                      </div>
 
-                  <div className="ingredients">
-                    <h3>Ingredients</h3>
-                    <ul>
-                      {recipe.ingredients.map((ingredient, index) => {
-                        return (
-                          <li
-                            key={`ing-${index}`}
-                          >{`${ingredient.quantity} ${ingredient.name}`}</li>
-                        );
-                      })}
-                    </ul>
-                  </div>
-                  <div className="instructions">
-                    <h3>Procedure</h3>
-                    <ol>
-                      {recipe.instructions.map((instruction, index) => {
-                        return (
-                          <li key={`inst-${index}`}>{instruction.step}</li>
-                        );
-                      })}
-                    </ol>
+                      <div className="ingredients">
+                        <h3>Ingredients</h3>
+                        <ul>
+                          {recipe.ingredients.map((ingredient, index) => {
+                            return (
+                              <li
+                                key={`ing-${index}`}
+                              >{`${ingredient.quantity} ${ingredient.name}`}</li>
+                            );
+                          })}
+                        </ul>
+                      </div>
+                      <div className="instructions">
+                        <h3>Procedure</h3>
+                        <ol>
+                          {recipe.instructions.map((instruction, index) => {
+                            return (
+                              <li key={`inst-${index}`}>{instruction.step}</li>
+                            );
+                          })}
+                        </ol>
+                      </div>
+
+                      <div className="video">
+                        <iframe
+                          width="100%"
+                          height="480"
+                          src={recipe.videoUrl}
+                        ></iframe>
+                      </div>
+                    </div>
+
+                    <div className="misc">-ads here-</div>
                   </div>
                 </Fragment>
               )}
@@ -103,9 +117,19 @@ const Recipe = ({ allRecipesApi }) => {
           width: 100%;
         }
 
+        .recipe .recipe-info {
+          margin: 0 auto;
+          max-width: 1200px;
+        }
+
+        .recipe .recipe-info .misc {
+          display: none;
+        }
+
         .recipe .details,
         .recipe .ingredients,
-        .recipe .instructions {
+        .recipe .instructions,
+        .recipe .video {
           padding: 0 20px;
           margin-bottom: 20px;
         }
@@ -179,6 +203,20 @@ const Recipe = ({ allRecipesApi }) => {
         @media screen and (min-width: 1024px) {
           .recipe .hero {
             min-height: 550px;
+          }
+
+          .recipe .recipe-info {
+            display: flex;
+          }
+
+          .recipe .recipe-info .recipe-details {
+            width: 70%;
+          }
+
+          .recipe .recipe-info .misc {
+            display: block;
+            width: 30%;
+            background: #efefef;
           }
         }
 
