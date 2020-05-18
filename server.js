@@ -36,7 +36,7 @@ app.prepare().then(() => {
   // Routes Middleware
   server.use("/api/user", authRoute);
   server.use("/api/admin", adminRoute);
-  server.use("/api/recipes", recipeRoute);
+  // server.use("/api/recipes", recipeRoute);
 
   server.use(bodyParser.urlencoded({ extended: true }));
   server.use(bodyParser.json());

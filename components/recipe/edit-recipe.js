@@ -154,7 +154,7 @@ const EditRecipe = ({
           coverPhoto,
           photos,
           videoUrl,
-          recipeName,
+          name: recipeName,
           altName,
           url,
           description,
