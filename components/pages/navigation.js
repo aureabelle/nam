@@ -13,7 +13,7 @@ const Navigation = () => {
           </a>
         </Link>
 
-        <div className="menu">
+        {/* <div className="menu">
           <ul>
             <li>
               <Link href="/recipes">
@@ -32,7 +32,7 @@ const Navigation = () => {
               </Link>
             </li>
           </ul>
-        </div>
+        </div> */}
       </div>
       <style jsx global>{`
         .navigation {

@@ -12,9 +12,9 @@ const Recipe = ({ allRecipesApi }) => {
   const getAllRecipes = async () => {
     try {
       await fetch(allRecipesApi)
-        .then(res => res.json())
-        .then(data => {
-          const recipe = data.find(data => data.url === router.query.url);
+        .then((res) => res.json())
+        .then((data) => {
+          const recipe = data.find((data) => data.url === router.query.url);
 
           if (recipe) {
             setRecipe(recipe);
@@ -32,7 +32,7 @@ const Recipe = ({ allRecipesApi }) => {
     getAllRecipes();
   }, []);
 
-  console.log(recipe);
+  // console.log(recipe);
 
   return (
     <Fragment>
@@ -242,7 +242,7 @@ Recipe.getInitialProps = async ({ req }) => {
     : `${protocol}://${req.headers.host}/api/admin/recipes`;
 
   return {
-    allRecipesApi
+    allRecipesApi,
   };
 };
 
